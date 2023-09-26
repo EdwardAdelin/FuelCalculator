@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAB434L3LTTYOyZaOkvYTt4QTYmPj50DE8&libraries=places"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
@@ -58,6 +61,47 @@
 
     <!-- SCRIPT USED TO SHOW DATA & USED TO ACCES DATA -->
     <script src="calculator.js"></script>
+    <!-- end of script to show data -->
+
+
+    <!-- API GOOGLE-->
+    <form>
+        <label for="city1">City 1:</label>
+        <input type="text" id="city1" name="city1"><br><br>
+
+        <label for="city2">City 2:</label>
+        <input type="text" id="city2" name="city2"><br><br>
+
+        <button type="button" onclick="calculateDistance()">Calculate Distance</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        function calculateDistance() {
+            var city1 = document.getElementById('city1').value;
+            var city2 = document.getElementById('city2').value;
+            
+            var service = new google.maps.DistanceMatrixService();
+            service.getDistanceMatrix({
+                origins: [city1],
+                destinations: [city2],
+                travelMode: 'DRIVING',
+                unitSystem: google.maps.UnitSystem.METRIC,
+                avoidHighways: false,
+                avoidTolls: false
+            }, function(response, status) {
+                if (status == 'OK') {
+                    var distance = response.rows[0].elements[0].distance.text;
+                    document.getElementById('result').innerHTML = 'Distance between ' + city1 + ' and ' + city2 + ': ' + distance;
+                } else {
+                    alert('Error: ' + status);
+                }
+            });
+        }
+    </script>
+
+
 </body>
 </html>
 <!-- making a basic web app #3-->
